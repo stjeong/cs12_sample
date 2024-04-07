@@ -1,51 +1,35 @@
 ﻿
-/* ================= 6.3.5 System.Xml.Serialization.XmlSerializer ================= */
+/* ================= 예제 6.12: ArrayList 사용 예 ================= */
 
-using System.Text;
-using System.Xml.Serialization;
-
-public class Person
-{
-    public int Age;
-    public string Name;
-
-    public Person()
-    {
-    }
-
-    public Person(int age, string name)
-    {
-        this.Age = age;
-        this.Name = name;
-    }
-
-    public override string ToString()
-    {
-        return string.Format("{0} {1}", this.Age, this.Name);
-    }
-}
+using System.Collections;
 
 class Program
 {
     static void Main(string[] args)
     {
-        MemoryStream ms = new MemoryStream();
-        XmlSerializer xs = new XmlSerializer(typeof(Person));
+        ArrayList ar = new ArrayList();
 
-        Person person = new Person(36, "Anderson");
+        // 4개의 요소를 컬렉션에 추가
+        ar.Add("Hello");
+        ar.Add(6);
+        ar.Add("World");
+        ar.Add(true);
 
-        // MemoryStream에 문자열로 person 객체를 직렬화
-        xs.Serialize(ms, person);
-        ms.Position = 0;
+        // 숫자 6을 포함하고 있는지 판단
+        Console.WriteLine("Contains(6): " + ar.Contains(6));
 
-        // MemoryStream로부터 객체를 역직렬화해서 복원
-        Person clone = xs.Deserialize(ms) as Person;
+        // "World" 문자열을 컬렉션에서 삭제
+        ar.Remove("World");
 
-        Console.WriteLine(clone); // 출력 결과: 36 Anderson
-
+        // 2번째 요소의 값을 false로 변경
+        ar[2] = false;
         Console.WriteLine();
-        byte[] buf = ms.ToArray();
-        Console.WriteLine(Encoding.UTF8.GetString(buf));
+
+        // 컬렉션의 요소를 모두 출력
+        foreach (object obj in ar)
+        {
+            Console.WriteLine(obj);
+        }
     }
 }
 

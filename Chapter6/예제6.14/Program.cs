@@ -1,51 +1,25 @@
 ﻿
-/* ================= 예제 6.13: 사용자 정의 클래스에 정렬 기능을 추가 ================= */
+/* ================= 예제 6.14: Stack 사용 예 ================= */
 
 using System.Collections;
-
-public class Person : IComparable
-{
-    public int Age;
-    public string Name;
-
-    public Person(int age, string name)
-    {
-        this.Age = age;
-        this.Name = name;
-    }
-
-    public int CompareTo(object obj) // 나이순으로 정렬한다.
-    {
-        Person target = (Person)obj;
-        if (this.Age > target.Age) return 1;
-        else if (this.Age == target.Age) return 0;
-        return -1;
-    }
-
-    public override string ToString()
-    {
-        return string.Format("{0}({1})", this.Name, this.Age);
-    }
-}
 
 class Program
 {
     static void Main(string[] args)
     {
-        ArrayList ar = new ArrayList();
+        Stack st = new Stack();
 
-        ar.Add(new Person(32, "Cooper"));
-        ar.Add(new Person(56, "Anderson"));
-        ar.Add(new Person(17, "Sammy"));
-        ar.Add(new Person(27, "Paul"));
+        st.Push(1);
+        st.Push(5);
+        st.Push(3);
 
-        ar.Sort();
+        int last = (int)st.Pop();
+        st.Push(7);
 
-        foreach (Person person in ar)
+        while (st.Count > 0)
         {
-            Console.WriteLine(person);
-        }
+            Console.Write(st.Pop() + ", ");
+        } // 스택을 Pop 과정 없이 비우고 싶다면 st.Clear() 메서드를 호출해도 된다.
     }
 }
-
 

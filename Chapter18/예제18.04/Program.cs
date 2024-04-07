@@ -1,4 +1,6 @@
 ﻿
+/* ================= 18.4 보간된 상수 문자열(Constant Interpolated Strings) ================= */
+
 using System.Diagnostics;
 
 namespace ConsoleApp;

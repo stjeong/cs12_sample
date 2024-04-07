@@ -1,4 +1,7 @@
-﻿class Program
+﻿
+/* ================= 14.4 스택에만 생성할 수 있는 값 타입 지원 – ref struct ================= */
+
+class Program
 {
     static void Main(string[] args)
     {

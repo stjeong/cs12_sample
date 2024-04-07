@@ -1,5 +1,5 @@
 ﻿
-/* ================= 예제 6.44: 매개변수화된 쿼리 사용 ================= */
+/* ================= 예제 6.45: SqlDataAdapter를 이용해 테이블 내용을 조회 ================= */
 
 using System.Data;
 using Microsoft.Data.SqlClient;
@@ -9,43 +9,14 @@ class Program
     static void Main(string[] args)
     {
         string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=TestDB;User ID=sa;Password=pw@2023; Encrypt=False";
-        string name = "Cooper";
-        DateTime birth = new DateTime(1990, 2, 7);
-        string email = "cooper@hotmail.com";
-        int family = 5;
 
-        using (SqlConnection sqlCon = new SqlConnection())
+        DataSet ds = new DataSet();
+        using (SqlConnection sqlCon = new SqlConnection(connectionString))
         {
-            sqlCon.ConnectionString = connectionString;
-            sqlCon.Open();
-
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = sqlCon;
-            
-            // @Name 매개변수 준비
-            SqlParameter paramName = new SqlParameter("Name", SqlDbType.NVarChar, 20);
-            paramName.Value = name;
-            
-            // @Birth 매개변수 준비
-            SqlParameter paramBirth = new SqlParameter("Birth", SqlDbType.Date);
-            paramBirth.Value = birth;
-            
-            // @Email 매개변수 준비
-            SqlParameter paramEmail = new SqlParameter("Email", SqlDbType.NVarChar, 100);
-            paramEmail.Value = email;
-            
-            // @Family 매개변수 준비
-            SqlParameter paramFamily = new SqlParameter("Family", SqlDbType.TinyInt);
-            paramFamily.Value = family;
-            
-            // cmd.Parameters 컬렉션에 SqlParameter 개체를 추가
-            cmd.Parameters.Add(paramName);
-            cmd.Parameters.Add(paramBirth);
-            cmd.Parameters.Add(paramEmail);
-            cmd.Parameters.Add(paramFamily);
-
-            cmd.CommandText = "INSERT INTO MemberInfo(Name, Birth, Email, Family) VALUES(@Name, @Birth, @Email, @Family)";
-            cmd.ExecuteNonQuery();
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT * FROM MemberInfo", sqlCon);
+            sda.Fill(ds, "MemberInfo");
         }
+
+        ds.WriteXml(Console.Out); // DataSet이 가진 내용을 콘솔 화면에 출력한다
     }
 }

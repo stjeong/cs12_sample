@@ -1,4 +1,6 @@
 ﻿
+/* ================= 12.6 로컬 함수(Local functions) ================= */
+
 namespace ConsoleApp1;
 
 class Program

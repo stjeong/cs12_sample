@@ -1,4 +1,6 @@
 ﻿
+/* ================= 15.1 신규 제네릭 제약 조건 – Delegate, Enum, unmanaged ================= */
+
 using System.Runtime.InteropServices;
 
 class Program

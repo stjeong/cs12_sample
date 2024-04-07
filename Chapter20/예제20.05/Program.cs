@@ -1,4 +1,7 @@
-﻿using System;
+﻿
+/* ================= 20.5 컬렉션 식과 스프레드 연산자 ================= */
+
+using System;
 using System.Collections;
 
 internal class Program

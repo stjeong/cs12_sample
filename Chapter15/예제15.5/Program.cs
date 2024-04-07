@@ -1,4 +1,7 @@
-﻿[Serializable]
+﻿
+/* ================= 15.5 자동 구현 속성의 특성 지원 ================= */
+
+[Serializable]
 public class Foo
 {
     [field: NonSerialized]

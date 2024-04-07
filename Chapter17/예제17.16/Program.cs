@@ -1,4 +1,6 @@
 ﻿
+/* ================= 17.15 제약 조건이 없는 형식 매개변수 주석(Unconstrained type parameter annotations) ================= */
+
 #nullable enable
 
 class Program

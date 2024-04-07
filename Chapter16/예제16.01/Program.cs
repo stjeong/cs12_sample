@@ -1,4 +1,6 @@
 ﻿
+/* ================= 16.1 #nullable 지시자와 nullable 참조 형식 ================= */
+
 // .NET 7부터 생성하는 프로젝트는 csproj에 <Nullable>enable</Nullable> 속성이 추가되므로
 // 기본값이 enable
 

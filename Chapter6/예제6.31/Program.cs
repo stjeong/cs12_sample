@@ -1,35 +1,21 @@
 ﻿
-/* ================= 예제 6.30: FileStream의 비동기 호출과 유사한 Delegate의 비동기 호출 ================= */
+/* ================= 예제 6.31: 현재 컴퓨터에 할당된 IP 주소 출력 ================= */
 
-public class Calc
-{
-    public static long Cumsum(int start, int end)
-    {
-        long sum = 0;
-        for (int i = start; i <= end; i++)
-        {
-            sum += i;
-        }
-        return sum;
-    }
-}
+using System.Net;
 
 class Program
 {
-    public delegate long CalcMethod(int start, int end);
-
     static void Main(string[] args)
     {
-        CalcMethod calc = new CalcMethod(Calc.Cumsum);
-        calc.BeginInvoke(1, 100, calcCompleted, calc);
-        Console.ReadLine();
-    }
+        string myComputer = Dns.GetHostName();
 
-    static void calcCompleted(IAsyncResult ar)
-    {
-        CalcMethod calc = ar.AsyncState as CalcMethod;
-        long result = calc.EndInvoke(ar);
-        Console.WriteLine(result);
+        Console.WriteLine("컴퓨터 이름: " + myComputer);
+
+        IPHostEntry entry = Dns.GetHostEntry(myComputer);
+        foreach (IPAddress ipAddress in entry.AddressList)
+        {
+            Console.WriteLine(ipAddress.AddressFamily + ": " + ipAddress);
+        }
     }
 }
 

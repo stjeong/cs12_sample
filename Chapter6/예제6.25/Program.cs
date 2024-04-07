@@ -1,20 +1,15 @@
 ﻿
-/* ================= 예제 6.24: 스레드에 안전한 메서드 ================= */
+/* ================= 예제 6.25: 스레드에 안전하지 않은 메서드를 외부에서 안전하게 사용하는 방법 ================= */
 
 class MyData
 {
     int number = 0;
 
-    public object _numberLock = new object();
-
     public int Number { get { return number; } }
 
     public void Increment()
     {
-        lock (_numberLock)
-        {
-            number++;
-        }
+        number++;
     }
 }
 
@@ -42,7 +37,10 @@ class Program
 
         for (int i = 0; i < 100000; i++)
         {
-            data.Increment();
+            lock (data)
+            {
+                data.Increment();
+            }
         }
     }
 }

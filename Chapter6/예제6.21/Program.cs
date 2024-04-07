@@ -1,5 +1,5 @@
 ﻿
-/* ================= 예제 6.20: 스레드를 사용하지 않는 계산 프로그램 ================= */
+/* ================= 예제 6.21: 스레드를 사용한 계산 프로그램 ================= */
 
 class Program
 {
@@ -11,14 +11,15 @@ class Program
         {
             Console.WriteLine("숫자를 입력하세요.");
             string userNumber = Console.ReadLine();
-
             if (userNumber.Equals("x", StringComparison.OrdinalIgnoreCase) == true)
             {
                 Console.WriteLine("프로그램 종료!");
                 break;
             }
 
-            CountPrimeNumbers(userNumber);
+            Thread t = new Thread(CountPrimeNumbers);
+            t.IsBackground = true;
+            t.Start(userNumber);
         }
     }
 
@@ -56,3 +57,4 @@ class Program
         return candidate != 1;
     }
 }
+

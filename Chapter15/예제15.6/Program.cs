@@ -1,4 +1,7 @@
-﻿class Program
+﻿
+/* ================= 15.6 튜플의 ==, != 연산자 지원 ================= */
+
+class Program
 {
     static void Main(string[] args)
     {

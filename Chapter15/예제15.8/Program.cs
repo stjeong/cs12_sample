@@ -1,4 +1,6 @@
 ﻿
+/* ================= 15.8 stackalloc 배열의 초기화 구문 지원 ================= */
+
 class Program
 {
     static unsafe void Main(string[] args)

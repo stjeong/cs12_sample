@@ -1,4 +1,6 @@
 ﻿
+/* ================= 16.10 문자열 @, $ 접두사 혼합 지원 ================= */
+
 class Program
 {
     static void Main(string[] args)

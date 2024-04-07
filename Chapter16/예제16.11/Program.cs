@@ -1,4 +1,6 @@
 ﻿
+/* ================= 16.11 기본 식(primary expression)으로 바뀐 stackalloc ================= */
+
 class Program
 {
     static unsafe void Main(string[] args)

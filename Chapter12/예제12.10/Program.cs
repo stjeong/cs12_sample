@@ -1,6 +1,7 @@
-﻿using System.Collections;
-using System.Net;
-using System.Text;
+﻿
+/* ================= 12.10 패턴 매칭 ================= */
+
+using System.Collections;
 
 namespace ConsoleApp1;
 

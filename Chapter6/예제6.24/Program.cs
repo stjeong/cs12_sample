@@ -1,46 +1,48 @@
 ﻿
-/* ================= 예제 6.23: Monitor 타입의 사용 예 ================= */
+/* ================= 예제 6.24: 스레드에 안전한 메서드 ================= */
 
-class Program
+class MyData
 {
     int number = 0;
 
+    public object _numberLock = new object();
+
+    public int Number { get { return number; } }
+
+    public void Increment()
+    {
+        lock (_numberLock)
+        {
+            number++;
+        }
+    }
+}
+
+class Program
+{
     static void Main(string[] args)
     {
-        Program pg = new Program();
+        MyData data = new MyData();
 
         Thread t1 = new Thread(threadFunc);
         Thread t2 = new Thread(threadFunc);
 
-        t1.Start(pg);
-        t2.Start(pg); // 2개의 스레드를 시작하고,
+        t1.Start(data);
+        t2.Start(data);
 
         t1.Join();
-        t2.Join(); // 2개의 스레드 실행이 끝날 때까지 대기한다.
+        t2.Join();
 
-        Console.WriteLine(pg.number); // 스레드 실행 완료 후 number 필드 값을 출력
+        Console.WriteLine(data.Number);
     }
 
     static void threadFunc(object inst)
     {
-        Program pg = inst as Program;
+        MyData data = inst as MyData;
+
         for (int i = 0; i < 100000; i++)
         {
-            //Monitor.Enter(pg);
-
-            //try
-            //{
-            //    pg.number = pg.number + 1;
-            //}
-            //finally
-            //{
-            //    Monitor.Exit(pg);
-            //}
-
-            lock (pg)
-            {
-                pg.number = pg.number + 1;
-            }
+            data.Increment();
         }
     }
 }

@@ -1,60 +1,34 @@
 ﻿
-/* ================= 예제 6.21: 스레드를 사용한 계산 프로그램 ================= */
+/* ================= 예제 6.22: 다중 스레드에서 단일 변수 사용 ================= */
 
 class Program
 {
+    int number = 0;
+
     static void Main(string[] args)
     {
-        Console.WriteLine("입력한 숫자까지의 소수 개수 출력 (종료: 'x' + Enter)");
+        Program pg = new Program();
 
-        while (true)
-        {
-            Console.WriteLine("숫자를 입력하세요.");
-            string userNumber = Console.ReadLine();
-            if (userNumber.Equals("x", StringComparison.OrdinalIgnoreCase) == true)
-            {
-                Console.WriteLine("프로그램 종료!");
-                break;
-            }
+        Thread t1 = new Thread(threadFunc);
+        Thread t2 = new Thread(threadFunc);
 
-            Thread t = new Thread(CountPrimeNumbers);
-            t.IsBackground = true;
-            t.Start(userNumber);
-        }
+        t1.Start(pg);
+        t2.Start(pg); // 2개의 스레드를 시작하고,
+
+        t1.Join();
+        t2.Join(); // 2개의 스레드 실행이 끝날 때까지 대기한다.
+
+        Console.WriteLine(pg.number); // 스레드 실행 완료 후 number 필드 값을 출력
     }
 
-    static void CountPrimeNumbers(object initialValue)
+    static void threadFunc(object inst)
     {
-        string value = (string)initialValue;
-        int primeCandidate = int.Parse(value);
-        int totalPrimes = 0;
+        Program pg = inst as Program;
 
-        for (int i = 2; i < primeCandidate; i++)
+        for (int i = 0; i < 10; i++)
+        // for (int i = 0; i < 10000; i++)
         {
-            if (IsPrime(i) == true)
-            {
-
-                totalPrimes++;
-            }
+            pg.number = pg.number + 1; // Program 객체의 number 필드 값을 증가
         }
-
-        Console.WriteLine("숫자 {0}까지의 소수 개수? {1}", value, totalPrimes);
-    }
-
-    // 소수 판정 메서드, 이해하지 못해도 상관없음.
-    static bool IsPrime(int candidate)
-    {
-        if ((candidate & 1) == 0)
-        {
-            return candidate == 2;
-        }
-
-        for (int i = 3; (i * i) <= candidate; i += 2)
-        {
-            if ((candidate % i) == 0) return false;
-        }
-
-        return candidate != 1;
     }
 }
-

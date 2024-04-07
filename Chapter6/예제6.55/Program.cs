@@ -1,32 +1,22 @@
 ﻿
-/* ================= 예제 6.53: SqlCommand에 트랜잭션 적용 ================= */
+/* ================= 예제 6.55: 어셈블리에 포함된 모든 타입을 열거 ================= */
 
-using Microsoft.Data.SqlClient;
+using System.Reflection;
 
 class Program
 {
     static void Main(string[] args)
     {
-        string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=TestDB;User ID=sa;Password=pw@2023; Encrypt=False";
+        AppDomain currentDomain = AppDomain.CurrentDomain;
+        Console.WriteLine("Current Domain Name: " + currentDomain.FriendlyName);
 
-        using (SqlConnection sqlCon = new SqlConnection(connectionString))
+        foreach (Assembly asm in currentDomain.GetAssemblies())
         {
-            sqlCon.Open();
-
-            using (SqlTransaction transaction = sqlCon.BeginTransaction())
+            Console.WriteLine("    " + asm.FullName);
+            foreach (Type type in asm.GetTypes())
             {
-                string txt = "INSERT INTO MemberInfo(Name, Birth, Email, Family) VALUES('{0}', '{1}', '{2}', {3})";
-
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = sqlCon;
-                cmd.Transaction = transaction;
-                cmd.CommandText = string.Format(txt, "Fox", "1970-01-25", "fox@gmail.com", "5");
-                cmd.ExecuteNonQuery();
-                cmd.CommandText = string.Format(txt, "Dana", "1972-01-25", "fox@gmail.com", "1");
-                cmd.ExecuteNonQuery(); // PK 중복으로 예외 발생
-                transaction.Commit();
+                Console.WriteLine("        " + type.FullName);
             }
         }
     }
 }
-

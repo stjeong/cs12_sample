@@ -1,4 +1,7 @@
-﻿internal class Program
+﻿
+/* ================= 9.3 동시성 컬렉션 ================= */
+
+internal class Program
 {
     static List<int> list = new List<int>();
 

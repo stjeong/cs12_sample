@@ -1,4 +1,7 @@
-﻿internal class Program
+﻿
+/* ================= 19.5 IntPtr/UIntPtr과 nint/unint의 통합 ================= */
+
+internal class Program
 {
     static void Main(string[] args)
     {

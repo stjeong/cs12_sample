@@ -1,4 +1,6 @@
 ﻿
+/* ================= 14.6 3항 연산자에 ref 지원 ================= */
+
 class Program
 {
     static void Main(string[] args)

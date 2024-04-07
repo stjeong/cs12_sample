@@ -1,4 +1,6 @@
 ﻿
+/* ================= 17.2 대상에 따라 new 식 추론(Target-typed new expressions) ================= */
+
 class Program
 {
     static void Main(string[] args)

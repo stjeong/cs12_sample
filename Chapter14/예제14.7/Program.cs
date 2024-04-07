@@ -1,4 +1,6 @@
 ﻿
+/* ================= 14.7 private protected 접근자 추가 ================= */
+
 class Program
 {
     static void Main(string[] args)

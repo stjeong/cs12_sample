@@ -1,4 +1,7 @@
-﻿using System.Net;
+﻿
+/* ================= 17.5 익명 함수 개선 ================= */
+
+using System.Net;
 
 class Program
 {

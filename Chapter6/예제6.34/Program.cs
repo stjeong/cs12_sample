@@ -1,8 +1,9 @@
 ﻿
-/* ================= 예제 6.33: UDP 소켓: 서버 측 바인딩 ================= */
+/* ================= 예제 6.34: UDP 서버 측 소켓을 구현 ================= */
 
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 class Program
 {
@@ -20,32 +21,21 @@ class Program
 
     private static void serverFunc(object obj)
     {
-        Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        IPAddress ipAddress = GetCurrentIPAddress();
+        Socket srvSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 10200);
 
-        if (ipAddress == null)
+        srvSocket.Bind(endPoint);
+
+        byte[] recvBytes = new byte[1024];
+        EndPoint clientEP = new IPEndPoint(IPAddress.None, 0);
+
+        while (true)
         {
-            Console.WriteLine("IPv4용 랜 카드가 없습니다.");
-            return;
+            int nRecv = srvSocket.ReceiveFrom(recvBytes, ref clientEP);
+            string txt = Encoding.UTF8.GetString(recvBytes, 0, nRecv);
+
+            byte[] sendBytes = Encoding.UTF8.GetBytes("Hello: " + txt);
+            srvSocket.SendTo(sendBytes, clientEP);
         }
-
-        IPEndPoint endPoint = new IPEndPoint(ipAddress, 10200);
-        socket.Bind(endPoint);
-    }
-
-    // 현재 컴퓨터에 장착된 네트워크 어댑터의 IPv4 주소를 반환
-    private static IPAddress GetCurrentIPAddress()
-    {
-        IPAddress[] addrs = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
-
-        foreach (IPAddress ipAddr in addrs)
-        {
-            if (ipAddr.AddressFamily == AddressFamily.InterNetwork)
-            {
-                return ipAddr;
-            }
-        }
-
-        return null;
     }
 }

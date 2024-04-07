@@ -1,4 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿
+/* ================= 19.11 속성 및 필드에 지정할 수 있는 required 예약어 추가 ================= */
+
+using System.Diagnostics.CodeAnalysis;
 
 Person p = new Person { Age = 62, FirstName = "Anders", LastName = "Hejlsberg" };
 

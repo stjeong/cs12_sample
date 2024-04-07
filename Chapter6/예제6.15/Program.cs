@@ -1,5 +1,5 @@
 ﻿
-/* ================= 예제 6.14: Stack 사용 예 ================= */
+/* ================= 예제 6.15: Queue 사용 예 ================= */
 
 using System.Collections;
 
@@ -7,19 +7,19 @@ class Program
 {
     static void Main(string[] args)
     {
-        Stack st = new Stack();
+        Queue q = new Queue();
 
-        st.Push(1);
-        st.Push(5);
-        st.Push(3);
+        q.Enqueue(1);
+        q.Enqueue(5);
+        q.Enqueue(3);
 
-        int last = (int)st.Pop();
-        st.Push(7);
+        int first = (int)q.Dequeue();
+        q.Enqueue(7);
 
-        while (st.Count > 0)
+        while (q.Count > 0)
         {
-            Console.Write(st.Pop() + ", ");
-        } // 스택을 Pop 과정 없이 비우고 싶다면 st.Clear() 메서드를 호출해도 된다.
+            Console.Write(q.Dequeue() + ", ");
+        } // 큐를 Dequeue 과정 없이 비우고 싶다면 q.Clear() 메서드를 호출해도 된다.
     }
 }
 

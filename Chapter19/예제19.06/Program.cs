@@ -1,4 +1,7 @@
-﻿using System;
+﻿
+/* ================= 19.6 문자열 개선 ================= */
+
+using System;
 using System.Text;
 
 internal class Program

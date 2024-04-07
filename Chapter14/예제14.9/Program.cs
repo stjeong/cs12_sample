@@ -1,4 +1,7 @@
-﻿class Program
+﻿
+/* ================= 14.9 뒤에 오지 않는 명명된 인수 ================= */
+
+class Program
 {
     static void Main(string[] args)
     {

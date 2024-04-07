@@ -1,9 +1,15 @@
 ﻿
-/* ================= 예제 6.38: TCP 클라이언트 측 소켓을 구현 ================= */
+/* ================= 예제 6.39: TCP 서버의 비동기 통신 ================= */
 
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+
+public class AsyncStateData
+{
+    public byte[] Buffer;
+    public Socket Socket;
+}
 
 class Program
 {
@@ -26,24 +32,40 @@ class Program
 
     private static void serverFunc(object obj)
     {
-        using (Socket srvSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+        using (Socket srvSocket =
+        new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
         {
             IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 11200);
-
             srvSocket.Bind(endPoint);
-            srvSocket.Listen(10);
 
+            srvSocket.Listen(10);
             while (true)
             {
                 Socket clntSocket = srvSocket.Accept();
-                byte[] recvBytes = new byte[1024];
-                int nRecv = clntSocket.Receive(recvBytes);
-                string txt = Encoding.UTF8.GetString(recvBytes, 0, nRecv);
-                byte[] sendBytes = Encoding.UTF8.GetBytes("Hello: " + txt);
-                clntSocket.Send(sendBytes);
-                clntSocket.Close();
+                AsyncStateData data = new AsyncStateData();
+                data.Buffer = new byte[1024];
+                data.Socket = clntSocket;
+                clntSocket.BeginReceive(data.Buffer, 0, data.Buffer.Length,
+                                        SocketFlags.None, asyncReceiveCallback, data);
             }
         }
+    }
+
+    private static void asyncReceiveCallback(IAsyncResult asyncResult)
+    {
+        AsyncStateData rcvData = asyncResult.AsyncState as AsyncStateData;
+        int nRecv = rcvData.Socket.EndReceive(asyncResult);
+        string txt = Encoding.UTF8.GetString(rcvData.Buffer, 0, nRecv);
+        byte[] sendBytes = Encoding.UTF8.GetBytes("Hello: " + txt);
+        rcvData.Socket.BeginSend(sendBytes, 0, sendBytes.Length,
+                                SocketFlags.None, asyncSendCallback, rcvData.Socket);
+    }
+
+    private static void asyncSendCallback(IAsyncResult asyncResult)
+    {
+        Socket socket = asyncResult.AsyncState as Socket;
+        socket.EndSend(asyncResult);
+        socket.Close();
     }
 
     private static void clientFunc(object obj)
@@ -66,3 +88,4 @@ class Program
         Console.WriteLine("TCP Client socket: Closed");
     }
 }
+

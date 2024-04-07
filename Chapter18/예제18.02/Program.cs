@@ -1,4 +1,6 @@
 ﻿
+/* ================= 18.2 구조체 개선 ================= */
+
 Person p1 = new Person();
 Console.WriteLine(p1.Name);
 

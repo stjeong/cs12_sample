@@ -1,45 +1,29 @@
 ﻿
-/* ================= 예제 6.49: 칼럼 정보를 포함하는 DataTable 정의 ================= */
+/* ================= 예제 6.50: DataSet과 연동되는 DataAdapter ================= */
 
 using System.Data;
+using Microsoft.Data.SqlClient;
 
 class Program
 {
     static void Main(string[] args)
     {
-        DataColumn nameCol = new DataColumn("Name", typeof(string));
-        DataColumn birthCol = new DataColumn("Birth", typeof(DateTime));
-        DataColumn emailCol = new DataColumn("Email", typeof(string));
-        DataColumn familyCol = new DataColumn("Family", typeof(byte));
+        string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=TestDB;User ID=sa;Password=pw@2023; Encrypt=False";
+        DataSet ds = new DataSet();
 
-        DataTable table = new DataTable("MemberInfo");
+        using (SqlConnection sqlCon = new SqlConnection(connectionString))
+        {
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT * FROM MemberInfo", sqlCon);
+            sda.Fill(ds, "MemberInfo"); // DataSet에 SELECT 결과를 담는다.
+        }
 
-        table.Columns.Add(nameCol);
-        table.Columns.Add(birthCol);
-        table.Columns.Add(emailCol);
-        table.Columns.Add(familyCol);
+        // DataSet에 포함된 테이블 중에서 "MemberInfo"를 찾고
+        DataTable dt = ds.Tables["MemberInfo"];
 
-        // INSERT: 4개의 레코드를 생성
-        table.Rows.Add("Anderson", new DateTime(1950, 5, 20), "anderson@gmail.com", 2);
-        table.Rows.Add("Jason", new DateTime(1967, 12, 3), "jason@gmail.com", 0);
-        table.Rows.Add("Mark", new DateTime(1998, 3, 2), "mark@naver.com", 1);
-        table.Rows.Add("Jennifer", new DateTime(1985, 5, 6), "jennifer@jennifersoft.com", 0);
-
-        // SELECT: 가족 구성원이 1명 이상인 레코드를 선택
-        DataRow[] members = table.Select("Family >= 1");
-
-        foreach (DataRow row in members)
+        // SELECT로 반환된 데이터 레코드를 열람한다.
+        foreach (DataRow row in dt.Rows)
         {
             Console.WriteLine("{0}, {1}, {2}, {3}", row["Name"], row["Birth"], row["Email"], row["Family"]);
         }
-        
-        // UPDATE: 4번째 레코드의 Name 칼럼의 값을 "Jennifer"에서 "Jenny"로 변경
-        table.Rows[3]["Name"] = "Jenny";
-        
-        // DELETE: 4번째 레코드를 삭제
-        table.Rows.Remove(table.Rows[3]);
-
-        DataSet ds = new DataSet();
-        ds.Tables.Add(table);
     }
 }

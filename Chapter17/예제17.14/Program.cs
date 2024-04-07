@@ -1,4 +1,6 @@
 ﻿
+/* ================= 17.14 함수 포인터(Function pointers) ================= */
+
 using System.Runtime.InteropServices;
 
 class Program

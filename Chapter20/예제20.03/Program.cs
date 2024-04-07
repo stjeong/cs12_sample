@@ -1,4 +1,6 @@
 ﻿
+/* ================= 20.3 모든 형식의 별칭 ================= */
+
 using Person = (int Age, string Name);
 using UnnamedPerson = (int, string);
 using unsafe BytePtr = byte*;

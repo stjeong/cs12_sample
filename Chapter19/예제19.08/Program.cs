@@ -1,4 +1,7 @@
-﻿GetData();
+﻿
+/* ================= 19.8 ref struct 내에 ref 필드 지원 ================= */
+
+GetData();
 
 static MyType GetData()
 {
@@ -11,7 +14,9 @@ static MyType GetData()
 // 1. 만약 이렇게 구현되었다면 문제가 없지만,
 ref struct MyType
 {
+#pragma warning disable CS0169 // The field 'MyType.n' is never used
     ref int n;
+#pragma warning restore CS0169 // The field 'MyType.n' is never used
     public MyType(scoped ref int n1) { }
 }
 

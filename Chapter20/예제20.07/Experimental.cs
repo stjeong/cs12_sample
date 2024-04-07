@@ -5,7 +5,7 @@ namespace InterceptTest
 
     internal class Experimental
     {
-        // [InterceptsLocation(@"...[실습 중인 소스 코드 경로]...\Chapter20\예제20.07\Program.cs", line: 9, character: 21)]
+        // [InterceptsLocation(@"...[실습 중인 소스 코드 경로]...\Chapter20\예제20.07\Program.cs", line: 13, character: 21)]
         public static void MyMethod() => Console.WriteLine("My Method");
     }
 }

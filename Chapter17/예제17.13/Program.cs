@@ -1,4 +1,6 @@
 ﻿
+/* ================= 17.13 원시 크기 정수(Native ints) ================= */
+
 class Program
 {
     static void Main(string[] args)

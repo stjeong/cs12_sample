@@ -1,19 +1,34 @@
 ﻿
-/* ================= 예제 6.16: FileStream에 텍스트를 쓰는 예제 ================= */
-
-using System.Text;
+/* ================= 예제 6.17: Move의 덮어쓰기 구현 ================= */
 
 class Program
 {
     static void Main(string[] args)
     {
+        PrepareSample();
+
+        string target = "c:\\temp\\test.dat";
+
+        if (File.Exists(target) == true)
+        {
+            File.Delete(target);
+        }
+
+        File.Move("test.log", target);
+    }
+
+    private static void PrepareSample()
+    {
+        // 예제를 위한 사전 작업
         using (FileStream fs = new FileStream("test.log", FileMode.Create))
         {
-            StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
-            sw.WriteLine("Hello World");
-            sw.WriteLine("Anderson");
-            sw.Write(32000);
-            sw.Flush();
+            BinaryWriter bw = new BinaryWriter(fs);
+            bw.Write("Hello World" + Environment.NewLine);
+            bw.Flush();
         }
+
+        File.Delete("c:\\temp\\test.dat");
     }
 }
+
+

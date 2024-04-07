@@ -1,4 +1,7 @@
-﻿internal class Program
+﻿
+/* ================= 19.4 shift 연산자 개선 ================= */
+
+internal class Program
 {
     static void Main(string[] args)
     {

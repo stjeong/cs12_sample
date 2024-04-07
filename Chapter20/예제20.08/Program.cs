@@ -1,4 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿
+/* ================= 20.8 Experimental 특성 지원 ================= */
+
+using System.Diagnostics.CodeAnalysis;
 
 #pragma warning disable MYID01
 

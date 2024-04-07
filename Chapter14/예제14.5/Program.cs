@@ -1,4 +1,6 @@
 ﻿
+/* ================= 14.5 신규 추가 타입: Span<T> ================= */
+
 using System.Runtime.InteropServices;
 
 class Program

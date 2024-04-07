@@ -1,4 +1,6 @@
 ﻿
+/* ================= 17.10 foreach 루프에 대한 GetEnumerator 확장 메서드 지원(Extension GetEnumerator) ================= */
+
 class Program
 {
     static void Main(string[] args)

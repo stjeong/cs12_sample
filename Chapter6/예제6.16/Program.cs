@@ -1,25 +1,19 @@
 ﻿
-/* ================= 예제 6.15: Queue 사용 예 ================= */
+/* ================= 예제 6.16: FileStream에 텍스트를 쓰는 예제 ================= */
 
-using System.Collections;
+using System.Text;
 
 class Program
 {
     static void Main(string[] args)
     {
-        Queue q = new Queue();
-
-        q.Enqueue(1);
-        q.Enqueue(5);
-        q.Enqueue(3);
-
-        int first = (int)q.Dequeue();
-        q.Enqueue(7);
-
-        while (q.Count > 0)
+        using (FileStream fs = new FileStream("test.log", FileMode.Create))
         {
-            Console.Write(q.Dequeue() + ", ");
-        } // 큐를 Dequeue 과정 없이 비우고 싶다면 q.Clear() 메서드를 호출해도 된다.
+            StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
+            sw.WriteLine("Hello World");
+            sw.WriteLine("Anderson");
+            sw.Write(32000);
+            sw.Flush();
+        }
     }
 }
-

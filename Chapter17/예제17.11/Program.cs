@@ -1,4 +1,6 @@
 ﻿
+/* ================= 17.11 부분 메서드에 대한 새로운 기능(New features for partial methods) ================= */
+
 class Program
 {
     static void Main(string[] args)

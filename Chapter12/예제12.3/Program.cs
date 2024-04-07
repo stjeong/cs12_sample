@@ -1,4 +1,6 @@
 ﻿
+/* ================= 12.3 튜플 ================= */
+
 namespace ConsoleApp1;
 
 public class IntResult

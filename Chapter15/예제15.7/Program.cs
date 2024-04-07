@@ -1,4 +1,7 @@
-﻿class Program
+﻿
+/* ================= 15.7 ref 지역 변수의 재할당 가능 ================= */
+
+class Program
 {
     static void Main(string[] args)
     {

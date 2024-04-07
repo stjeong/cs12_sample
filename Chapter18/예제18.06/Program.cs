@@ -1,4 +1,6 @@
 ﻿
+/* ================= 18.6 람다 기능 향상(Lambda improvements) ================= */
+
 {
     var list = new List<string> { "Anders", "Kevin" };
 

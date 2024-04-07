@@ -1,4 +1,6 @@
 ﻿
+/* ================= 17.1 레코드(Records) ================= */
+
 class Program
 {
     static void Main(string[] args)

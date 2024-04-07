@@ -1,4 +1,6 @@
 ﻿
+/* ================= 12.1 더욱 편리해진 out 매개변수 사용 ================= */
+
 class Program
 {
     static void Main(string[] args)

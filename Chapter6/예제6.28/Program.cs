@@ -1,59 +1,20 @@
 ﻿
-/* ================= 예제 6.27: 개선된 ThreadPool의 사용 예 ================= */
+/* ================= 예제 6.28: 동기 방식의 파일 읽기 ================= */
 
-using System.Collections;
-
-class MyData
-{
-    int number = 0;
-
-    public int Number { get { return number; } }
-
-    public void Increment()
-    {
-        Interlocked.Increment(ref number);
-    }
-}
+using System.Text;
 
 class Program
 {
     static void Main(string[] args)
     {
-        MyData data = new MyData();
-
-        Hashtable ht1 = new Hashtable();
-        ht1["data"] = data;
-        ht1["evt"] = new EventWaitHandle(false, EventResetMode.ManualReset);
-
-        // 데이터와 함께 이벤트 객체를 스레드 풀의 스레드에 전달한다.
-        ThreadPool.QueueUserWorkItem(threadFunc, ht1);
-        Hashtable ht2 = new Hashtable();
-
-        ht2["data"] = data;
-        ht2["evt"] = new EventWaitHandle(false, EventResetMode.ManualReset);
-
-        // 데이터와 함께 이벤트 객체를 스레드 풀의 스레드에 전달한다.
-        ThreadPool.QueueUserWorkItem(threadFunc, ht2);
-
-        // 2개의 이벤트 객체가 Signal 상태로 바뀔 때까지 대기한다.
-        (ht1["evt"] as EventWaitHandle).WaitOne();
-        (ht2["evt"] as EventWaitHandle).WaitOne();
-
-        Console.WriteLine(data.Number);
-    }
-
-    static void threadFunc(object inst)
-    {
-        Hashtable ht = inst as Hashtable;
-        MyData data = ht["data"] as MyData;
-
-        for (int i = 0; i < 100000; i++)
+        // HOSTS 파일을 읽어서 내용을 출력한다.
+        using (FileStream fs = new FileStream(@"C:\windows\system32\drivers\etc\HOSTS", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
         {
-            data.Increment();
+            byte[] buf = new byte[fs.Length];
+            fs.Read(buf, 0, buf.Length);
+            string txt = Encoding.UTF8.GetString(buf);
+            Console.WriteLine(txt);
         }
-
-        // 주어진 이벤트 객체를 Signal 상태로 전환한다.
-        (ht["evt"] as EventWaitHandle).Set();
     }
 }
 

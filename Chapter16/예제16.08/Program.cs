@@ -1,4 +1,6 @@
 ﻿
+/* ================= 16.8 기본 인터페이스 메서드 ================= */
+
 using static System.Console;
 
 #if NET_CORE

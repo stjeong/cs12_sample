@@ -1,4 +1,7 @@
-﻿public class Program
+﻿
+/* ================= 19.13 정적 메서드에 대한 delegate 처리 시 캐시(cahce) 적용 ================= */
+
+public class Program
 {
     static Action<string>? _action;
 

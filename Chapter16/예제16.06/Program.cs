@@ -1,4 +1,6 @@
 ﻿
+/* ================= 16.6 정적 로컬 함수 ================= */
+
 class Program
 {
     static void Main(string[] args)

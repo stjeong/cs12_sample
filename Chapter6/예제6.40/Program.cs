@@ -1,91 +1,46 @@
 ﻿
-/* ================= 예제 6.39: TCP 서버의 비동기 통신 ================= */
+/* ================= 예제 6.40: TCP 소켓을 이용한 HTTP 통신 ================= */
 
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-public class AsyncStateData
-{
-    public byte[] Buffer;
-    public Socket Socket;
-}
-
 class Program
 {
     static void Main(string[] args)
     {
-        // 서버 소켓이 동작하는 스레드
-        Thread serverThread = new Thread(serverFunc);
-        serverThread.IsBackground = true;
-        serverThread.Start();
-        Thread.Sleep(500); // 소켓 서버용 스레드가 실행될 시간을 주기 위해
-
-        // 클라이언트 소켓이 동작하는 스레드
-        Thread clientThread = new Thread(clientFunc);
-        clientThread.IsBackground = true;
-        clientThread.Start();
-
-        Console.WriteLine("종료하려면 아무 키나 누르세요...");
-        Console.ReadLine();
-    }
-
-    private static void serverFunc(object obj)
-    {
-        using (Socket srvSocket =
-        new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
-        {
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 11200);
-            srvSocket.Bind(endPoint);
-
-            srvSocket.Listen(10);
-            while (true)
-            {
-                Socket clntSocket = srvSocket.Accept();
-                AsyncStateData data = new AsyncStateData();
-                data.Buffer = new byte[1024];
-                data.Socket = clntSocket;
-                clntSocket.BeginReceive(data.Buffer, 0, data.Buffer.Length,
-                                        SocketFlags.None, asyncReceiveCallback, data);
-            }
-        }
-    }
-
-    private static void asyncReceiveCallback(IAsyncResult asyncResult)
-    {
-        AsyncStateData rcvData = asyncResult.AsyncState as AsyncStateData;
-        int nRecv = rcvData.Socket.EndReceive(asyncResult);
-        string txt = Encoding.UTF8.GetString(rcvData.Buffer, 0, nRecv);
-        byte[] sendBytes = Encoding.UTF8.GetBytes("Hello: " + txt);
-        rcvData.Socket.BeginSend(sendBytes, 0, sendBytes.Length,
-                                SocketFlags.None, asyncSendCallback, rcvData.Socket);
-    }
-
-    private static void asyncSendCallback(IAsyncResult asyncResult)
-    {
-        Socket socket = asyncResult.AsyncState as Socket;
-        socket.EndSend(asyncResult);
-        socket.Close();
-    }
-
-    private static void clientFunc(object obj)
-    {
         Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-        EndPoint serverEP = new IPEndPoint(IPAddress.Loopback, 11200);
+        IPAddress ipAddr = Dns.GetHostEntry("www.microsoft.com").AddressList[0];
+        EndPoint serverEP = new IPEndPoint(ipAddr, 80);
         socket.Connect(serverEP);
 
-        byte[] buf = Encoding.UTF8.GetBytes(DateTime.Now.ToString());
-        socket.Send(buf);
+        string request = "GET / HTTP/1.0\r\nHost: www.microsoft.com\r\n\r\n";
+        byte[] sendBuffer = Encoding.UTF8.GetBytes(request);
+        // 네이버 웹 서버로 HTTP 요청을 전송
+        socket.Send(sendBuffer);
+        // HTTP 요청이 전달됐으므로 네이버 웹 서버로부터 응답을 수신
+        MemoryStream ms = new MemoryStream();
+        while (true)
+        {
+            byte[] rcvBuffer = new byte[4096];
+            int nRecv = socket.Receive(rcvBuffer);
 
-        byte[] recvBytes = new byte[1024];
-        int nRecv = socket.Receive(recvBytes);
+            if (nRecv == 0)
+            {
+                // 서버 측에서 더 이상 받을 데이터가 없으면 0을 반환
+                break;
+            }
 
-        string txt = Encoding.UTF8.GetString(recvBytes, 0, nRecv);
-        Console.WriteLine(txt);
+            ms.Write(rcvBuffer, 0, nRecv);
+        }
+
         socket.Close();
+        string response = Encoding.UTF8.GetString(ms.GetBuffer(), 0, (int)ms.Length);
 
-        Console.WriteLine("TCP Client socket: Closed");
+        Console.WriteLine(response);
+        // 서버 측에서 받은 HTML 데이터를 파일로 저장
+        File.WriteAllText("naverpage.html", response);
     }
 }
 

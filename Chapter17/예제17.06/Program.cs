@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿
+/* ================= 17.6 최상위 문(Top-level statements) ================= */
+
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 Console.WriteLine("Hello World!");

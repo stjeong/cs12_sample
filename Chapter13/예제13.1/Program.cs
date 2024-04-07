@@ -1,4 +1,7 @@
-﻿namespace ConsoleApp1;
+﻿
+/* ================= 13.1 Main 메서드에 async 예약어 허용 ================= */
+
+namespace ConsoleApp1;
 
 class Program
 {

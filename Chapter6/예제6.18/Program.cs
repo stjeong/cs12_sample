@@ -1,34 +1,23 @@
 ﻿
-/* ================= 예제 6.17: Move의 덮어쓰기 구현 ================= */
+/* ================= 예제 6.18: 2개의 스레드 실행이 완료된 후 프로그램 종료 ================= */
 
 class Program
 {
     static void Main(string[] args)
     {
-        PrepareSample();
+        Thread t = new Thread(threadFunc);
+        // t.IsBackground = true;
 
-        string target = "c:\\temp\\test.dat";
-
-        if (File.Exists(target) == true)
-        {
-            File.Delete(target);
-        }
-
-        File.Move("test.log", target);
+        t.Start();
+        // 더는 주 스레드가 실행할 명령어가 없으므로 주 스레드는 제거됨
     }
 
-    private static void PrepareSample()
+    static void threadFunc()
     {
-        // 예제를 위한 사전 작업
-        using (FileStream fs = new FileStream("test.log", FileMode.Create))
-        {
-            BinaryWriter bw = new BinaryWriter(fs);
-            bw.Write("Hello World" + Environment.NewLine);
-            bw.Flush();
-        }
-
-        File.Delete("c:\\temp\\test.dat");
+        Console.WriteLine("60초 후에 프로그램 종료");
+        Thread.Sleep(1000 * 60); // 60초 동안 실행 중지
+                                 // 현재 주 스레드는 종료됐어도 t 스레드는 존속한다.
+        Console.WriteLine("스레드 종료!");
     }
 }
-
 

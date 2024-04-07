@@ -1,4 +1,6 @@
 ﻿
+/* ================= 16.12 제네릭 구조체의 unmanaged 지원 ================= */
+
 using System.Runtime.InteropServices;
 
 public class Nested<T> where T : unmanaged

@@ -1,5 +1,5 @@
 ﻿
-/* ================= 6.7.5.1 UDP 소켓 ================= */
+/* ================= 6.7.5.2 TCP 소켓 ================= */
 
 using System.Net;
 using System.Net.Sockets;
@@ -9,15 +9,25 @@ class Program
 {
     static void Main(string[] args)
     {
-        Socket clntSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        Socket srvSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 11200);
 
-        byte[] buf = Encoding.UTF8.GetBytes(DateTime.Now.ToString());
+        srvSocket.Bind(endPoint);
 
-        // IPAddress localAddress = IPAddress.Parse("127.0.0.1");
-        // EndPoint serverEP = new IPEndPoint(localAddress, 10200);
+        srvSocket.Listen(10);
 
-        EndPoint serverEP = new IPEndPoint(IPAddress.Loopback, 10200);
+        Socket clntSocket = srvSocket.Accept();
 
-        clntSocket.SendTo(buf, serverEP);
+        byte[] recvBytes = new byte[1024];
+        int nRecv = clntSocket.Receive(recvBytes);
+
+        string txt = Encoding.UTF8.GetString(recvBytes, 0, nRecv);
+
+        byte[] sendBytes = Encoding.UTF8.GetBytes("Hello: " + txt);
+        clntSocket.Send(sendBytes);
+
+        clntSocket.Close(); // 클라이언트 대응 소켓을 종료하고,
+        srvSocket.Close(); // 서버용 소켓을 종료한다.
     }
 }
+

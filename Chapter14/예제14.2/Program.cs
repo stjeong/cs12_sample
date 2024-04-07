@@ -1,4 +1,6 @@
 ﻿
+/* ================= 14.2 읽기 전용(readonly) 구조체 ================= */
+
 class Program
 {
     readonly Vector v1 = new Vector();

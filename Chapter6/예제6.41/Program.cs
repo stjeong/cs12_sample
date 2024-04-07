@@ -1,5 +1,5 @@
 ﻿
-/* ================= 예제 6.40: TCP 소켓을 이용한 HTTP 통신 ================= */
+/* ================= 예제 6.41: TCP 소켓으로 구현한 HTTP 서버 ================= */
 
 using System.Net;
 using System.Net.Sockets;
@@ -9,38 +9,38 @@ class Program
 {
     static void Main(string[] args)
     {
-        Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-        IPAddress ipAddr = Dns.GetHostEntry("www.microsoft.com").AddressList[0];
-        EndPoint serverEP = new IPEndPoint(ipAddr, 80);
-        socket.Connect(serverEP);
-
-        string request = "GET / HTTP/1.0\r\nHost: www.microsoft.com\r\n\r\n";
-        byte[] sendBuffer = Encoding.UTF8.GetBytes(request);
-        // 네이버 웹 서버로 HTTP 요청을 전송
-        socket.Send(sendBuffer);
-        // HTTP 요청이 전달됐으므로 네이버 웹 서버로부터 응답을 수신
-        MemoryStream ms = new MemoryStream();
-        while (true)
+        using (Socket srvSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
         {
-            byte[] rcvBuffer = new byte[4096];
-            int nRecv = socket.Receive(rcvBuffer);
+            Console.WriteLine("http://localhost:8000 으로 방문해 보세요.");
 
-            if (nRecv == 0)
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 8000);
+
+            srvSocket.Bind(endPoint);
+            srvSocket.Listen(10);
+
+            while (true)
             {
-                // 서버 측에서 더 이상 받을 데이터가 없으면 0을 반환
-                break;
+                Socket clntSocket = srvSocket.Accept();
+                ThreadPool.QueueUserWorkItem(httpProcessFunc, clntSocket);
             }
-
-            ms.Write(rcvBuffer, 0, nRecv);
         }
+    }
+
+    private static void httpProcessFunc(object state)
+    {
+        Socket socket = state as Socket;
+
+        byte[] reqBuf = new byte[4096];
+        socket.Receive(reqBuf);
+
+        string header = "HTTP/1.0 200 OK\nContent-Type: text/html; charset=UTF-8\r\n\r\n";
+        string body = "<html><body><mark>테스트 HTML</mark> 웹 페이지입니다.</body></html>";
+
+        byte[] respBuf = Encoding.UTF8.GetBytes(header + body);
+        socket.Send(respBuf);
 
         socket.Close();
-        string response = Encoding.UTF8.GetString(ms.GetBuffer(), 0, (int)ms.Length);
-
-        Console.WriteLine(response);
-        // 서버 측에서 받은 HTML 데이터를 파일로 저장
-        File.WriteAllText("naverpage.html", response);
     }
 }
+
 

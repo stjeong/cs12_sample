@@ -1,4 +1,6 @@
 ﻿
+/* ================= 19.7 목록 및 ReadOnlySpan<char> 패턴 매칭 ================= */
+
 using System.Linq;
 
 int[] arr1 = { 1, 3, 2, 4 };

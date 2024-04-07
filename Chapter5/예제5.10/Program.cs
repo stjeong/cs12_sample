@@ -1,5 +1,5 @@
 ﻿
-/* ================= 예제 5.10: #if/#endif 전처리기 대신 Conditional 특성 사용 ================= */
+/* ================= 예제 5.9: #if/#endif 전처리기 대신 Conditional 특성 사용 ================= */
 
 using System.Diagnostics;
 

@@ -1,7 +1,32 @@
 ﻿
-/* ================= 예제 6.12: ArrayList 사용 예 ================= */
+/* ================= 예제 6.13: 사용자 정의 클래스에 정렬 기능을 추가 ================= */
 
 using System.Collections;
+
+public class Person : IComparable
+{
+    public int Age;
+    public string Name;
+
+    public Person(int age, string name)
+    {
+        this.Age = age;
+        this.Name = name;
+    }
+
+    public int CompareTo(object obj) // 나이순으로 정렬한다.
+    {
+        Person target = (Person)obj;
+        if (this.Age > target.Age) return 1;
+        else if (this.Age == target.Age) return 0;
+        return -1;
+    }
+
+    public override string ToString()
+    {
+        return string.Format("{0}({1})", this.Name, this.Age);
+    }
+}
 
 class Program
 {
@@ -9,27 +34,18 @@ class Program
     {
         ArrayList ar = new ArrayList();
 
-        // 4개의 요소를 컬렉션에 추가
-        ar.Add("Hello");
-        ar.Add(6);
-        ar.Add("World");
-        ar.Add(true);
+        ar.Add(new Person(32, "Cooper"));
+        ar.Add(new Person(56, "Anderson"));
+        ar.Add(new Person(17, "Sammy"));
+        ar.Add(new Person(27, "Paul"));
 
-        // 숫자 6을 포함하고 있는지 판단
-        Console.WriteLine("Contains(6): " + ar.Contains(6));
+        ar.Sort();
 
-        // "World" 문자열을 컬렉션에서 삭제
-        ar.Remove("World");
-
-        // 2번째 요소의 값을 false로 변경
-        ar[2] = false;
-        Console.WriteLine();
-
-        // 컬렉션의 요소를 모두 출력
-        foreach (object obj in ar)
+        foreach (Person person in ar)
         {
-            Console.WriteLine(obj);
+            Console.WriteLine(person);
         }
     }
 }
+
 

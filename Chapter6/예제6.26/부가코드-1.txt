@@ -1,47 +1,36 @@
 ﻿
-/* ================= 6.6.3 System.Threading.Interlocked ================= */
+
+/* ================= 6.6.5 System.Threading.EventWaitHandle ================= */
 
 class Program
 {
     static void Main(string[] args)
     {
-        MyData data = new MyData();
+        // Non-Signal 상태의 이벤트 객체 생성
+        // 생성자의 첫 번째 인자가 false이면 Non-Signal 상태로 시작.
+        // true이면 Signal 상태로 시작
+        EventWaitHandle ewh = new EventWaitHandle(false, EventResetMode.ManualReset);
 
-        Thread t1 = new Thread(threadFunc);
-        Thread t2 = new Thread(threadFunc);
+        Thread t = new Thread(threadFunc);
+        t.IsBackground = true;
+        t.Start(ewh);
 
-        t1.Start(data);
-        t2.Start(data);
+        // Non-Signal 상태에서 WaitOne을 호출했으므로 Signal 상태로 바뀔 때까지 대기
+        ewh.WaitOne();
 
-        t1.Join();
-        t2.Join();
-
-        Console.WriteLine(data.Number);
+        Console.WriteLine("주 스레드 종료!");
     }
 
-    static void threadFunc(object inst)
+    static void threadFunc(object state)
     {
-        MyData data = inst as MyData;
+        EventWaitHandle ewh = state as EventWaitHandle;
 
-        for (int i = 0; i < 100000; i++)
-        {
-            lock (data)
-            {
-                data.Increment();
-            }
-        }
-    }
-}
+        Console.WriteLine("60초 후에 프로그램 종료");
+        Thread.Sleep(1000 * 60); // 60초 동안 실행 중지
+        Console.WriteLine("스레드 종료!");
 
-class MyData
-{
-    int number = 0;
-
-    public int Number { get { return number; } }
-
-    public void Increment()
-    {
-        Interlocked.Increment(ref number);
+        // Non-Signal 상태의 이벤트를 Signal 상태로 전환
+        ewh.Set();
     }
 }
 

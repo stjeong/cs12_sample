@@ -1,4 +1,6 @@
 ﻿
+/* ================= 18.8 기타 개선 사항 ================= */
+
 string firstName;
 var person = ValueTuple.Create("Kevin", "Arnold");
 

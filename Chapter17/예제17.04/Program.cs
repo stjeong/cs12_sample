@@ -1,4 +1,6 @@
 ﻿
+/* ================= 17.4 로컬 함수에 특성 지정 가능(Attributes on local functions) ================= */
+
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;

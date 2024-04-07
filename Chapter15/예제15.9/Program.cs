@@ -1,4 +1,6 @@
 ﻿
+/* ================= 무료 PDF - 메서드 선택 규칙에 대한 3가지 개선 사항 ================= */
+
 class StaticButInstanceMatchFirst
 {
     public static void Do(object obj)

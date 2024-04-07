@@ -1,4 +1,6 @@
 ﻿
+/* ================= 18.1 레코드 개선 ================= */
+
 Console.WriteLine($"ValueType: {typeof(Vector).IsValueType}");
 Console.WriteLine($"ValueType: {typeof(Point).IsValueType}");
 Console.WriteLine($"ValueType: {typeof(Person).IsValueType}");

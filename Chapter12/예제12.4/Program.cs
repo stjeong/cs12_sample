@@ -1,4 +1,6 @@
 ﻿
+/* ================= 12.4 Deconstruct 메서드 ================= */
+
 namespace ConsoleApp1;
 
 class Rectangle

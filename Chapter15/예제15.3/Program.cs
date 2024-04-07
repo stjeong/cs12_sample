@@ -1,4 +1,7 @@
-﻿unsafe struct CSharpStructType
+﻿
+/* ================= 15.3 힙에 할당된 고정 크기 배열의 인덱싱 개선 ================= */
+
+unsafe struct CSharpStructType
 {
     public fixed int fields[2];
     public fixed long dummy[3];

@@ -1,5 +1,5 @@
 ﻿
-/* ================= 예제 6.59: 어셈블리를 참조하지 않고 다른 DLL의 클래스를 사용 ================= */
+/* ================= 예제 6.61: 확장 모듈 제작 ================= */
 
 using System.Reflection;
 
@@ -9,31 +9,71 @@ class Program
 {
     static void Main(string[] args)
     {
-        string dllPath = GetClassLibaryPath();
+        string pluginFolder = @".\plugin";
 
-        Assembly asm = Assembly.LoadFrom(dllPath);
-
-        Type systemInfoType = asm.GetType("ClassLibrary1.SystemInfo");
-
-        ConstructorInfo ctorInfo = systemInfoType.GetConstructor(Type.EmptyTypes);
-        object objInstance = ctorInfo.Invoke(null);
-
-        MethodInfo methodInfo = systemInfoType.GetMethod("WriteInfo");
-        methodInfo.Invoke(objInstance, null);
-
-        FieldInfo fieldInfo = systemInfoType.GetField("_is64Bit", BindingFlags.NonPublic | BindingFlags.Instance);
-        object oldValue = fieldInfo.GetValue(objInstance);
-
-        fieldInfo.SetValue(objInstance, !Environment.Is64BitOperatingSystem);
-        methodInfo.Invoke(objInstance, null);
+        if (Directory.Exists(pluginFolder) == true)
+        {
+            ProcessPlugIn(pluginFolder);
+        }
     }
 
-    private static string GetClassLibaryPath()
+    private static void ProcessPlugIn(string rootPath)
     {
-        string path = Path.GetDirectoryName(typeof(Program).Assembly.Location);
-        string libPath = Path.Combine(path, "..", "..", "..", "..", "ClassLibrary1", "bin", "Debug", "net7.0", "ClassLibrary1.dll");
+        foreach (string dllPath in Directory.EnumerateFiles(rootPath, "*.dll"))
+        {
+            // 확장 모듈을 현재의 AppDomain에 로드
+            Assembly pluginDll = Assembly.LoadFrom(dllPath);
+            Type entryType = FindEntryType(pluginDll);
+            if (entryType == null)
+            {
+                continue;
+            }
 
-        return libPath;
+            // 타입에 해당하는 객체를 생성하고,
+            object instance = Activator.CreateInstance(entryType);
+            
+            // 약속된 메서드를 구하고,
+            MethodInfo entryMethod = FindStartupMethod(entryType);
+            if (entryMethod == null)
+            {
+                continue;
+            }
+            
+            // 메서드를 호출한다.
+            entryMethod.Invoke(instance, null);
+        }
+    }
+
+    private static Type FindEntryType(Assembly pluginDll)
+    {
+        foreach (Type type in pluginDll.GetTypes())
+        {
+            foreach (object objAttr in type.GetCustomAttributes(false))
+            {
+                if (objAttr.GetType().Name == "PluginAttribute")
+                {
+                    return type;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private static MethodInfo FindStartupMethod(Type entryType)
+    {
+        foreach (MethodInfo methodInfo in entryType.GetMethods())
+        {
+            foreach (object objAttribute in methodInfo.GetCustomAttributes(false))
+            {
+                if (objAttribute.GetType().Name == "StartupAttribute")
+                {
+                    return methodInfo;
+                }
+            }
+        }
+
+        return null;
     }
 }
 

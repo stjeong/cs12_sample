@@ -1,7 +1,9 @@
 ﻿
+/* ================= 20.2 기본 생성자 ================= */
+
 {
-PersonDTO p = new PersonDTO("John", 42);
-Console.WriteLine($"{p.GetName()}, {p.GetAge()}"); // 출력 결과: John, 0
+    PersonDTO p = new PersonDTO("John", 42);
+    Console.WriteLine($"{p.GetName()}, {p.GetAge()}"); // 출력 결과: John, 0
 }
 
 {
@@ -37,7 +39,9 @@ public struct PersonDTO2(string name, int age)
     public int Age { get; init; } = age;
 }
 
+#pragma warning disable CS9113 // Parameter is unread.
 public struct PersonDTO3(string Name, int Age)
+#pragma warning restore CS9113 // Parameter is unread.
 {
     public PersonDTO3(string Name) : this(Name, 0) { }
 }

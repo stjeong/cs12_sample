@@ -1,4 +1,6 @@
 ﻿
+/* ================= 12.5 람다 식을 이용한 메서드 정의 확대(Expression-bodied members) ================= */
+
 namespace ConsoleApp1;
 
 public class Vector

@@ -1,9 +1,11 @@
-﻿using System.Runtime.CompilerServices;
+﻿
+/* ================= 20.4 인라인 배열 ================= */
+
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 
 namespace 예제20._04;
-
 
 // unsafe 문맥을 필요: AllowUnsafeBlocks 속성을 true로 설정
 //unsafe struct StructType

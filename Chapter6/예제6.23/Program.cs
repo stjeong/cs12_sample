@@ -1,5 +1,5 @@
 ﻿
-/* ================= 예제 6.22: 다중 스레드에서 단일 변수 사용 ================= */
+/* ================= 예제 6.23: Monitor 타입의 사용 예 ================= */
 
 class Program
 {
@@ -24,11 +24,23 @@ class Program
     static void threadFunc(object inst)
     {
         Program pg = inst as Program;
-
-        for (int i = 0; i < 10; i++)
-        // for (int i = 0; i < 10000; i++)
+        for (int i = 0; i < 100000; i++)
         {
-            pg.number = pg.number + 1; // Program 객체의 number 필드 값을 증가
+            //Monitor.Enter(pg);
+
+            //try
+            //{
+            //    pg.number = pg.number + 1;
+            //}
+            //finally
+            //{
+            //    Monitor.Exit(pg);
+            //}
+
+            lock (pg)
+            {
+                pg.number = pg.number + 1;
+            }
         }
     }
 }

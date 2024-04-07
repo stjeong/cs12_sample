@@ -1,4 +1,6 @@
 ﻿
+/* ================= 18.3 네임스페이스 개선 ================= */
+
 namespace ConsoleApp1;
 
 internal class Program

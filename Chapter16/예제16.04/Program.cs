@@ -1,4 +1,6 @@
 ﻿
+/* ================= 16.4 간결해진 using 선언 ================= */
+
 class Program
 {
     static void Main(string[] args)

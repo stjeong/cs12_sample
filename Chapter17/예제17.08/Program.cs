@@ -1,4 +1,7 @@
-﻿using System.Runtime.CompilerServices;
+﻿
+/* ================= 17.8 모듈 이니셜라이저(Module initializers) ================= */
+
+using System.Runtime.CompilerServices;
 
 class Program
 {

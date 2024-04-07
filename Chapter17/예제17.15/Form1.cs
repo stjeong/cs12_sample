@@ -1,4 +1,6 @@
 ﻿
+/* ================= 17.14.2 비관리 함수를 통한 콜백 지원 ================= */
+
 #define USE_FUNCTION_POINTER
 
 using System.Runtime.CompilerServices;

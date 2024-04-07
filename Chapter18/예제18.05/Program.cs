@@ -1,4 +1,6 @@
 ﻿
+/* ================= 18.5 확장 속성 패턴(Extended property patterns) ================= */
+
 Name n1 = new Name("Anders", "Hejlsberg");
 Name n2 = new Name("Kevin", "Arnold");
 Name n3 = new Name("Frank", "Arnold");

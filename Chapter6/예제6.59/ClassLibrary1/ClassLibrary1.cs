@@ -1,7 +1,5 @@
 ﻿
-/* ================= 예제 6.57: 리플렉션 실습용 코드 ================= */
-
-namespace ConsoleApp1;
+namespace ClassLibrary1;
 
 public class SystemInfo
 {
@@ -16,14 +14,5 @@ public class SystemInfo
     public void WriteInfo()
     {
         Console.WriteLine("OS == {0}bits", (_is64Bit == true) ? "64" : "32");
-    }
-}
-
-class Program
-{
-    static void Main(string[] args)
-    {
-        SystemInfo sysInfo = new SystemInfo();
-        sysInfo.WriteInfo();
     }
 }

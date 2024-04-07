@@ -1,4 +1,6 @@
 ﻿
+/* ================= 17.12 localsinit 플래그 내보내기 무시(Suppress emitting localsinit flag) ================= */
+
 using System.Runtime.CompilerServices;
 
 class Program

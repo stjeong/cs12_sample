@@ -1,5 +1,5 @@
 ﻿
-/* ================= 예제 5.26: Dispose를 호출한 경우 소멸자가 불리지 않도록 변경한 객체 ================= */
+/* ================= 예제 5.25: Dispose를 호출한 경우 종료자가 불리지 않도록 변경한 객체 ================= */
 
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -12,7 +12,7 @@ class Program
         {
             UnmanagedMemoryManager m = new UnmanagedMemoryManager();
             m = null;
-            GC.Collect(); // GC로 인해 소멸자가 호출되므로 비관리 메모리도 해제됨.
+            GC.Collect(); // GC로 인해 종료자가 호출되므로 비관리 메모리도 해제됨.
 
             Console.WriteLine(Process.GetCurrentProcess().PrivateMemorySize64);
         }

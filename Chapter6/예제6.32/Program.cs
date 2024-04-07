@@ -1,21 +1,33 @@
 ﻿
-/* ================= 예제 6.31: 현재 컴퓨터에 할당된 IP 주소 출력 ================= */
-
-using System.Net;
+/* ================= 예제 6.32: 소켓 프로그램 실습을 위한 기본 코드 ================= */
 
 class Program
 {
     static void Main(string[] args)
     {
-        string myComputer = Dns.GetHostName();
+        // 서버 소켓이 동작하는 스레드
+        Thread serverThread = new Thread(serverFunc);
+        serverThread.IsBackground = true;
+        serverThread.Start();
 
-        Console.WriteLine("컴퓨터 이름: " + myComputer);
+        Thread.Sleep(500); // 소켓 서버용 스레드가 실행될 시간을 주기 위해
 
-        IPHostEntry entry = Dns.GetHostEntry(myComputer);
-        foreach (IPAddress ipAddress in entry.AddressList)
-        {
-            Console.WriteLine(ipAddress.AddressFamily + ": " + ipAddress);
-        }
+        // 클라이언트 소켓이 동작하는 스레드
+        Thread clientThread = new Thread(clientFunc);
+        clientThread.IsBackground = true;
+        clientThread.Start();
+
+        Console.WriteLine("종료하려면 아무 키나 누르세요...");
+        Console.ReadLine();
+    }
+
+    private static void serverFunc(object obj)
+    {
+        // ...... [서버 소켓 코드 작성] ......
+    }
+
+    private static void clientFunc(object obj)
+    {
+        // ...... [클라이언트 소켓 코드 작성] ......
     }
 }
-

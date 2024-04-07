@@ -1,5 +1,5 @@
 ﻿
-/* ================= 예제 5.21: IDisposable을 상속받는 FileLogger 타입 ================= */
+/* ================= 예제 5.20: IDisposable을 상속받는 FileLogger 타입 ================= */
 
 using System.Text;
 

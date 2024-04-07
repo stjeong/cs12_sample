@@ -1,5 +1,8 @@
 ﻿
-/* ================= 예제 6.32: 소켓 프로그램 실습을 위한 기본 코드 ================= */
+/* ================= 예제 6.33: UDP 소켓: 서버 측 바인딩 ================= */
+
+using System.Net;
+using System.Net.Sockets;
 
 class Program
 {
@@ -9,13 +12,7 @@ class Program
         Thread serverThread = new Thread(serverFunc);
         serverThread.IsBackground = true;
         serverThread.Start();
-        
         Thread.Sleep(500); // 소켓 서버용 스레드가 실행될 시간을 주기 위해
-                           
-        // 클라이언트 소켓이 동작하는 스레드
-        Thread clientThread = new Thread(clientFunc);
-        clientThread.IsBackground = true;
-        clientThread.Start();
 
         Console.WriteLine("종료하려면 아무 키나 누르세요...");
         Console.ReadLine();
@@ -23,11 +20,32 @@ class Program
 
     private static void serverFunc(object obj)
     {
-        // ...... [서버 소켓 코드 작성] ......
+        Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        IPAddress ipAddress = GetCurrentIPAddress();
+
+        if (ipAddress == null)
+        {
+            Console.WriteLine("IPv4용 랜 카드가 없습니다.");
+            return;
+        }
+
+        IPEndPoint endPoint = new IPEndPoint(ipAddress, 10200);
+        socket.Bind(endPoint);
     }
 
-    private static void clientFunc(object obj)
+    // 현재 컴퓨터에 장착된 네트워크 어댑터의 IPv4 주소를 반환
+    private static IPAddress GetCurrentIPAddress()
     {
-        // ...... [클라이언트 소켓 코드 작성] ......
+        IPAddress[] addrs = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
+
+        foreach (IPAddress ipAddr in addrs)
+        {
+            if (ipAddr.AddressFamily == AddressFamily.InterNetwork)
+            {
+                return ipAddr;
+            }
+        }
+
+        return null;
     }
 }

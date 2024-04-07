@@ -1,4 +1,6 @@
 ﻿
+/* ================= 16.5 Dispose 호출이 가능한 ref struct ================= */
+
 using System.Runtime.InteropServices;
 
 class Program

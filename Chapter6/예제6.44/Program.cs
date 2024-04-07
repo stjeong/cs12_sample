@@ -1,6 +1,7 @@
 ﻿
-/* ================= 예제 6.43: DataReader를 이용한 테이블 내용 조회 ================= */
+/* ================= 예제 6.44: 매개변수화된 쿼리 사용 ================= */
 
+using System.Data;
 using Microsoft.Data.SqlClient;
 
 class Program
@@ -8,30 +9,43 @@ class Program
     static void Main(string[] args)
     {
         string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=TestDB;User ID=sa;Password=pw@2023; Encrypt=False";
+        string name = "Cooper";
+        DateTime birth = new DateTime(1990, 2, 7);
+        string email = "cooper@hotmail.com";
+        int family = 5;
 
         using (SqlConnection sqlCon = new SqlConnection())
         {
             sqlCon.ConnectionString = connectionString;
-
-            // DB에 연결하고,
             sqlCon.Open();
 
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = sqlCon;
-            cmd.CommandText = "SELECT * FROM MemberInfo";
 
-            SqlDataReader reader = cmd.ExecuteReader();
+            // @Name 매개변수 준비
+            SqlParameter paramName = new SqlParameter("Name", SqlDbType.NVarChar, 20);
+            paramName.Value = name;
 
-            while (reader.Read()) // 읽어야 할 데이터가 남아 있다면 true, 없다면 false를 반환
-            {
-                string name = reader.GetString(0);
-                DateTime birth = reader.GetDateTime(1);
-                string email = reader.GetString(2);
-                byte family = reader.GetByte(3);
-                Console.WriteLine("{0}, {1}, {2}, {3}", name, birth, email, family);
-            }
+            // @Birth 매개변수 준비
+            SqlParameter paramBirth = new SqlParameter("Birth", SqlDbType.Date);
+            paramBirth.Value = birth;
 
-            reader.Close();
+            // @Email 매개변수 준비
+            SqlParameter paramEmail = new SqlParameter("Email", SqlDbType.NVarChar, 100);
+            paramEmail.Value = email;
+
+            // @Family 매개변수 준비
+            SqlParameter paramFamily = new SqlParameter("Family", SqlDbType.TinyInt);
+            paramFamily.Value = family;
+
+            // cmd.Parameters 컬렉션에 SqlParameter 개체를 추가
+            cmd.Parameters.Add(paramName);
+            cmd.Parameters.Add(paramBirth);
+            cmd.Parameters.Add(paramEmail);
+            cmd.Parameters.Add(paramFamily);
+
+            cmd.CommandText = "INSERT INTO MemberInfo(Name, Birth, Email, Family) VALUES(@Name, @Birth, @Email, @Family)";
+            cmd.ExecuteNonQuery();
         }
     }
 }

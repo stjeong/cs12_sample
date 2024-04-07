@@ -1,22 +1,29 @@
 ﻿
-/* ================= 예제 6.55: 어셈블리에 포함된 모든 타입을 열거 ================= */
+/* ================= 예제 6.57: 리플렉션 실습용 코드 ================= */
 
-using System.Reflection;
+namespace ConsoleApp1;
+
+public class SystemInfo
+{
+    bool _is64Bit;
+
+    public SystemInfo()
+    {
+        _is64Bit = Environment.Is64BitOperatingSystem;
+        Console.WriteLine("SystemInfo created.");
+    }
+
+    public void WriteInfo()
+    {
+        Console.WriteLine("OS == {0}bits", (_is64Bit == true) ? "64" : "32");
+    }
+}
 
 class Program
 {
     static void Main(string[] args)
     {
-        AppDomain currentDomain = AppDomain.CurrentDomain;
-        Console.WriteLine("Current Domain Name: " + currentDomain.FriendlyName);
-
-        foreach (Assembly asm in currentDomain.GetAssemblies())
-        {
-            Console.WriteLine("    " + asm.FullName);
-            foreach (Type type in asm.GetTypes())
-            {
-                Console.WriteLine("        " + type.FullName);
-            }
-        }
+        SystemInfo sysInfo = new SystemInfo();
+        sysInfo.WriteInfo();
     }
 }

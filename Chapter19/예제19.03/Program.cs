@@ -1,4 +1,7 @@
-﻿internal class Program
+﻿
+/* ================= 19.3 사용자 정의 checked 연산자 ================= */
+
+internal class Program
 {
     static void Main(string[] args)
     {

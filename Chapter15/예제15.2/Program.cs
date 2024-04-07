@@ -1,4 +1,6 @@
 ﻿
+/* ================= 15.2 사용자 정의 타입에 fixed 적용 가능 ================= */
+
 using System.Runtime.InteropServices;
 
 class Program

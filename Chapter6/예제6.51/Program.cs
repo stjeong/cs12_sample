@@ -1,29 +1,94 @@
 ﻿
-/* ================= 예제 6.50: DataSet과 연동되는 DataAdapter ================= */
+/* ================= 예제 6.51: DataSet 기반의 MemberInfoDAC 정의 ================= */
 
 using System.Data;
 using Microsoft.Data.SqlClient;
+
+public class MemberInfoDAC
+{
+    SqlConnection _sqlCon;
+    DataTable _table;
+
+    public MemberInfoDAC(SqlConnection sqlCon)
+    {
+        _sqlCon = sqlCon;
+
+        DataColumn nameCol = new DataColumn("Name", typeof(string));
+        DataColumn birthCol = new DataColumn("Birth", typeof(DateTime));
+        DataColumn emailCol = new DataColumn("Email", typeof(string));
+        DataColumn familyCol = new DataColumn("Family", typeof(byte));
+
+        _table = new DataTable("MemberInfo");
+        _table.Columns.Add(nameCol);
+        _table.Columns.Add(birthCol);
+        _table.Columns.Add(emailCol);
+        _table.Columns.Add(familyCol);
+    }
+
+    public DataRow NewRow()
+    {
+        return _table.NewRow();
+    }
+
+    void FillParameters(SqlCommand cmd, DataRow item)
+    {
+        SqlParameter paramName = new SqlParameter("Name", SqlDbType.NVarChar, 20);
+        paramName.Value = item["Name"];
+
+        SqlParameter paramBirth = new SqlParameter("Birth", SqlDbType.Date);
+        paramBirth.Value = item["Birth"];
+
+        SqlParameter paramEmail = new SqlParameter("Email", SqlDbType.NVarChar, 100);
+        paramEmail.Value = item["Email"];
+
+        SqlParameter paramFamily = new SqlParameter("Family", SqlDbType.TinyInt);
+        paramFamily.Value = item["Family"];
+
+        cmd.Parameters.Add(paramName);
+        cmd.Parameters.Add(paramBirth);
+        cmd.Parameters.Add(paramEmail);
+        cmd.Parameters.Add(paramFamily);
+    }
+
+    public void Insert(DataRow item)
+    {
+        string txt = "INSERT INTO MemberInfo(Name, Birth, Email, Family) VALUES (@Name, @Birth, @Email, @Family)";
+
+        SqlCommand cmd = new SqlCommand(txt, _sqlCon);
+        FillParameters(cmd, item);
+        cmd.ExecuteNonQuery();
+    }
+
+    public void Update(DataRow item)
+    {
+        string txt = "UPDATE MemberInfo SET Name=@Name, Birth=@Birth, Family=@Family WHERE Email=@Email";
+
+        SqlCommand cmd = new SqlCommand(txt, _sqlCon);
+        FillParameters(cmd, item);
+        cmd.ExecuteNonQuery();
+    }
+
+    public void Delete(DataRow item)
+    {
+        string txt = "DELETE FROM MemberInfo WHERE Email=@Email";
+
+        SqlCommand cmd = new SqlCommand(txt, _sqlCon);
+        FillParameters(cmd, item);
+        cmd.ExecuteNonQuery();
+    }
+
+    public DataSet SelectAll()
+    {
+        DataSet ds = new DataSet();
+        SqlDataAdapter sda = new SqlDataAdapter("SELECT * FROM MemberInfo", _sqlCon);
+        sda.Fill(ds, "MemberInfo");
+        return ds;
+    }
+}
 
 class Program
 {
     static void Main(string[] args)
     {
-        string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=TestDB;User ID=sa;Password=pw@2023; Encrypt=False";
-        DataSet ds = new DataSet();
-
-        using (SqlConnection sqlCon = new SqlConnection(connectionString))
-        {
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT * FROM MemberInfo", sqlCon);
-            sda.Fill(ds, "MemberInfo"); // DataSet에 SELECT 결과를 담는다.
-        }
-
-        // DataSet에 포함된 테이블 중에서 "MemberInfo"를 찾고
-        DataTable dt = ds.Tables["MemberInfo"];
-
-        // SELECT로 반환된 데이터 레코드를 열람한다.
-        foreach (DataRow row in dt.Rows)
-        {
-            Console.WriteLine("{0}, {1}, {2}, {3}", row["Name"], row["Birth"], row["Email"], row["Family"]);
-        }
     }
 }

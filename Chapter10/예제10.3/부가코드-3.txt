@@ -1,0 +1,37 @@
+﻿
+/* ================= 10.2.1 닷넷 4.5 BCL에 추가된 Async 메서드 ================= */
+
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+
+namespace ConsoleApp1;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        listener.Bind(new IPEndPoint(IPAddress.Any, 11200));
+        listener.Listen(10);
+
+        while (true)
+        {
+            var client = listener.Accept();
+            ProcessTcpClient(client);
+        }
+    }
+
+    private static async void ProcessTcpClient(Socket client)
+    {
+        byte[] buffer = new byte[1024];
+        int received = await client.ReceiveAsync(buffer);
+
+        string txt = Encoding.UTF8.GetString(buffer, 0, received);
+
+        byte[] sendBuffer = Encoding.UTF8.GetBytes("Hello: " + txt);
+        await client.SendAsync(sendBuffer);
+
+        client.Close();
+    }
+}

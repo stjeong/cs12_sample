@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+<TargetFramework>net7.0</TargetFramework>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<DefineConstants>NET_CORE</DefineConstants>
+        <ImplicitUsings>true</ImplicitUsings>
+	</PropertyGroup>
+	<ItemGroup>
+	</ItemGroup>
+	<ItemGroup>
+	</ItemGroup>
+	<PropertyGroup>
+	</PropertyGroup>
+</Project>

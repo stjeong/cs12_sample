@@ -1,0 +1,41 @@
+﻿
+
+/* ================= 6.3.6 System.Text.Json.JsonSerializer ================= */
+
+using System.Text.Json;
+
+public class Person
+{
+    public int Age;
+    public string Name;
+
+    public Person()
+    {
+    }
+
+    public Person(int age, string name)
+    {
+        this.Age = age;
+        this.Name = name;
+    }
+
+    public override string ToString()
+    {
+        return string.Format("{0} {1}", this.Age, this.Name);
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Person person = new Person(36, "Anderson");
+
+        JsonSerializerOptions options = new JsonSerializerOptions { IncludeFields = true };
+        string text = JsonSerializer.Serialize(person, options);
+        Console.WriteLine(text);
+
+        Person clone = JsonSerializer.Deserialize<Person>(text, options);
+        Console.WriteLine(clone); // 출력 결과: 36 Anderson
+    }
+}

@@ -1,0 +1,23 @@
+﻿
+/* ================= 5.3.3 호출 스택 ================= */
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        HasNoProblem();
+        HasProblem(); // NullReferenceException 발생
+    }
+    private static void HasNoProblem()
+    {
+        WriteText("Argument is not NULL");
+    }
+    private static void HasProblem()
+    {
+        WriteText(null); // NullReferenceException 발생
+    }
+    private static void WriteText(string txt)
+    {
+        Console.WriteLine(txt.ToLower());
+    }
+}

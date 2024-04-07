@@ -1,0 +1,22 @@
+﻿
+/* ================= 5.1.3.2 가변 매개변수: params ================= */
+
+namespace ConsoleApp1;
+
+class Program
+{
+    private static void PrintAll(params object[] values)
+    {
+        foreach (object value in values)
+        {
+            Console.WriteLine(value);
+        }
+    }
+
+    static void Main(string[] args)
+    {
+        PrintAll(1.05, "Result", 3);
+    }
+}
+
+

@@ -1,0 +1,19 @@
+﻿
+/* ================= 6.6.2 System.Threading.Monitor ================= */
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            Thread t = new Thread(threadFunc);
+            t.Start(i);
+        }
+    }
+
+    static void threadFunc(object value)
+    {
+        Console.WriteLine(value + "번째 스레드");
+    }
+}

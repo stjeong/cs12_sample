@@ -1,0 +1,16 @@
+﻿
+/* ================= 6.6.1 System.Threading.Thread ================= */
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Thread t = new Thread(threadFunc);
+        t.Start();
+    }
+
+    static void threadFunc()
+    {
+        Console.WriteLine("threadFunc run!");
+    }
+}

@@ -1,0 +1,13 @@
+﻿
+/* ================= 6.7.6 System.Net.Http.HttpClient ================= */
+
+class Program
+{
+    static HttpClient _client = new HttpClient();
+    
+    static void Main(string[] args)
+    {
+        string text = _client.GetStringAsync("http://www.naver.com:80").Result;
+        Console.WriteLine(text);
+    }
+}

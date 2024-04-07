@@ -1,0 +1,16 @@
+﻿/* ================= 5.1.2.1 시프트 연산자 ================= */
+
+namespace ConsoleApp1;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        int n = 38;
+        int leftShiftResult = n << 2;
+        int rightShiftResult = n >> 2;
+
+        Console.WriteLine(leftShiftResult); // 출력 결과: 152
+        Console.WriteLine(rightShiftResult); // 출력 결과: 9
+    }
+}
